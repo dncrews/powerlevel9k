@@ -169,7 +169,11 @@ left_prompt_segment() {
   echo -n "${visual_identifier}"
   # Print the content of the segment, if there is any
   [[ -n "$5" ]] && echo -n "${fg}${5}"
-  echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+
+  # If the string is a single space, don't add extras
+  if [[ "$5" != " " ]]; then
+    echo -n "${POWERLEVEL9K_WHITESPACE_BETWEEN_LEFT_SEGMENTS}"
+  fi
 
   CURRENT_BG=$3
   last_left_element_index=$current_index
@@ -835,6 +839,7 @@ prompt_dir() {
     current_state="NOT_WRITABLE"
   elif [[ $(print -P "%~") == '~' ]]; then
     current_state="HOME"
+    current_path=" "
   elif [[ $(print -P "%~") == '~'* ]]; then
     current_state="HOME_SUBFOLDER"
   fi
